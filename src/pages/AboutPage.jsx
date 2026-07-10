@@ -1,13 +1,16 @@
-import { memo } from 'react'
-import { motion } from 'framer-motion'
+import { memo, useState, lazy, Suspense } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   IconArrowLeft,
   IconCompass,
-  IconMapPin,
   IconBarbell,
   IconLanguage,
   IconTargetArrow,
   IconCamera,
+  IconMap,
+  IconMapOff,
+  IconMountain,
+  IconBook2,
 } from '@tabler/icons-react'
 import { ABOUT_STORY } from '../data/aboutStory'
 import { DEVELOPER } from '../data/developer'
@@ -15,9 +18,13 @@ import MeshBackground from '../components/background/MeshBackground'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useAppNavigate } from '../context/AppRouterContext'
 
+const IndiaTravelMap = lazy(() => import('../components/about/IndiaTravelMap'))
+
 const PURSUIT_ICONS = {
   calisthenics: IconBarbell,
   german: IconLanguage,
+  trekking: IconMountain,
+  anime: IconBook2,
 }
 
 const sectionReveal = {
@@ -45,6 +52,8 @@ function AboutPage() {
   const reducedMotion = useReducedMotion()
   const { navigate } = useAppNavigate()
   const { intro, travel, pursuits, objectives } = ABOUT_STORY
+  const [activeDestination, setActiveDestination] = useState(null)
+  const [mapOpen, setMapOpen] = useState(false)
 
   return (
     <div className="relative min-h-screen">
@@ -71,6 +80,13 @@ function AboutPage() {
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-white/55 md:text-base">
               {intro}
             </p>
+            <div className="mx-auto mt-8 max-w-sm overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.45)] md:max-w-md">
+              <img
+                src="/images/about-forest.png"
+                alt="Sahil Kumar in a forest"
+                className="aspect-[3/4] w-full object-cover"
+              />
+            </div>
           </div>
 
           {/* Travel & Photography */}
@@ -78,25 +94,50 @@ function AboutPage() {
             <SectionHeading icon={IconCamera} accent="#00D9FF">
               {travel.title}
             </SectionHeading>
-            <p className="mb-8 leading-relaxed text-white/55">{travel.body}</p>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {travel.destinations.map((dest, i) => (
+            <p className="mb-6 leading-relaxed text-white/55">{travel.body}</p>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMapOpen((open) => !open)
+                if (mapOpen) setActiveDestination(null)
+              }}
+              className="inline-flex items-center gap-2 rounded-full border border-[#00D9FF]/30 bg-[#00D9FF]/10 px-5 py-2.5 text-sm font-medium text-[#00D9FF] transition-colors hover:bg-[#00D9FF]/20"
+            >
+              {mapOpen ? <IconMapOff size={18} /> : <IconMap size={18} />}
+              {mapOpen ? 'Hide Map' : 'Show Map'}
+              {!mapOpen && (
+                <span className="text-xs text-[#00D9FF]/60">
+                  ({travel.destinations.length} places)
+                </span>
+              )}
+            </button>
+
+            <AnimatePresence>
+              {mapOpen && (
                 <motion.div
-                  key={dest.name}
                   initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.05 }}
-                  className="rounded-2xl border border-white/8 bg-white/[0.03] p-4 transition-colors hover:border-[#00D9FF]/30 hover:bg-white/[0.06]"
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 12 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="mt-6"
                 >
-                  <div className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-white">
-                    <IconMapPin size={14} className="shrink-0 text-[#00D9FF]" />
-                    {dest.name}
-                  </div>
-                  <p className="text-xs leading-relaxed text-white/45">{dest.note}</p>
+                  <Suspense
+                    fallback={
+                      <div className="flex h-[420px] items-center justify-center rounded-2xl border border-white/8 bg-white/[0.02] text-sm text-white/40 md:h-[480px]">
+                        Loading map…
+                      </div>
+                    }
+                  >
+                    <IndiaTravelMap
+                      destinations={travel.destinations}
+                      activeName={activeDestination}
+                      onSelect={setActiveDestination}
+                    />
+                  </Suspense>
                 </motion.div>
-              ))}
-            </div>
+              )}
+            </AnimatePresence>
           </motion.section>
 
           {/* Beyond the Screen */}
