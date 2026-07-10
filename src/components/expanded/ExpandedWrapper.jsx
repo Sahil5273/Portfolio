@@ -54,26 +54,6 @@ function useTextReveal(containerRef, active) {
   }, [active, containerRef])
 }
 
-
-
-export function useSkillBars(containerRef, active) {
-  useEffect(() => {
-    if (!active || !containerRef?.current) return
-
-    const bars = containerRef.current.querySelectorAll('[data-skill-bar]')
-    bars.forEach((bar) => {
-      const target = Number(bar.dataset.skillBar || 0)
-      // Set initial to 0 then animate to target
-      bar.style.width = '0%'
-      gsap.to(bar, {
-        width: `${target}%`,
-        duration: 1.1,
-        ease: 'power3.out',
-      })
-    })
-  }, [containerRef, active])
-}
-
 const ExpandedWrapper = memo(function ExpandedWrapper({ children, title, accent, onClose }) {
   const ref = useRef(null)
   useTextReveal(ref, true)

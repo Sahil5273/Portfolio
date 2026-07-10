@@ -45,14 +45,16 @@ function ProjectsExpanded({ onClose }) {
               </div>
 
               <div className="mt-4 flex gap-3">
-                <a
-                  href={project.live}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 rounded-full bg-[#00D9FF] px-4 py-2 text-xs font-semibold text-[#07071A]"
-                >
-                  Live <IconExternalLink size={14} />
-                </a>
+                {project.live && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 rounded-full bg-[#00D9FF] px-4 py-2 text-xs font-semibold text-[#07071A]"
+                  >
+                    Live <IconExternalLink size={14} />
+                  </a>
+                )}
 
                 <a
                   href={project.github}

@@ -1,8 +1,9 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IconSearch, IconX, IconMenu2 } from '@tabler/icons-react'
-import { DEVELOPER } from '../../data/cards'
-import SearchModal from '../search/SearchModal'
+import { DEVELOPER } from '../../data/developer'
+
+const SearchModal = lazy(() => import('../search/SearchModal'))
 
 const NAV_ITEMS = [
   { label: 'About', id: 'about' },
@@ -57,7 +58,7 @@ function MobileMenu({ activeSection, onNavClick, onClose }) {
   )
 }
 
-function Navbar({ activeSection, onNavClick, setCursor, scrolled }) {
+function Navbar({ activeSection, onNavClick, scrolled }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
 
@@ -118,8 +119,6 @@ function Navbar({ activeSection, onNavClick, setCursor, scrolled }) {
               <button
                 key={item.id}
                 onClick={() => onNavClick(item.id)}
-                onMouseEnter={() => setCursor?.('text')}
-                onMouseLeave={() => setCursor?.('default')}
                 className={`relative px-3 py-1.5 text-[13px] transition-colors ${
                   activeSection === item.id ? 'text-white' : 'text-[rgba(242,242,255,0.5)] hover:text-white'
                 }`}
@@ -177,7 +176,9 @@ function Navbar({ activeSection, onNavClick, setCursor, scrolled }) {
         )}
       </AnimatePresence>
 
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <Suspense fallback={null}>
+        {searchOpen && <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />}
+      </Suspense>
     </>
   )
 }

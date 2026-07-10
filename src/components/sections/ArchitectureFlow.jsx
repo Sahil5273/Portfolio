@@ -60,48 +60,6 @@ function FlowConnector({ color, delay = 0 }) {
   )
 }
 
-function SplitConnector({ color, delay = 0 }) {
-  return (
-    <motion.div
-      className="flex items-center justify-center gap-0 w-full"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay, duration: 0.3 }}
-    >
-      <motion.div
-        className="h-px flex-1"
-        style={{ background: `linear-gradient(to right, transparent, ${color}50)` }}
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: delay + 0.1, duration: 0.3, transformOrigin: 'right' }}
-      />
-      <div className="flex flex-col items-center">
-        <motion.div
-          className="w-px"
-          style={{ background: `${color}50` }}
-          initial={{ height: 0 }}
-          animate={{ height: 16 }}
-          transition={{ delay: delay + 0.15, duration: 0.3 }}
-        />
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: delay + 0.25 }}
-          style={{ color: `${color}80` }}
-          className="text-[10px]"
-        >▼</motion.span>
-      </div>
-      <motion.div
-        className="h-px flex-1"
-        style={{ background: `linear-gradient(to left, transparent, ${color}50)` }}
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: delay + 0.1, duration: 0.3, transformOrigin: 'left' }}
-      />
-    </motion.div>
-  )
-}
-
 function TechBadge({ label, color, delay = 0 }) {
   return (
     <motion.span

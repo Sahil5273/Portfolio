@@ -1,20 +1,8 @@
 import { memo } from 'react'
 import { motion } from 'framer-motion'
-import {
-  IconBrandGithub,
-  IconBrandLinkedin,
-  IconMail,
-} from '@tabler/icons-react'
-import { HuggingFaceIcon } from '../icons/HuggingFaceIcon'
 import ExpandedWrapper from './ExpandedWrapper'
-import { DEVELOPER } from '../../data/cards'
-
-const SOCIAL = [
-  { key: 'github', Icon: IconBrandGithub, label: 'GitHub', url: DEVELOPER.social.github },
-  { key: 'linkedin', Icon: IconBrandLinkedin, label: 'LinkedIn', url: DEVELOPER.social.linkedin },
-  { key: 'huggingface', Icon: HuggingFaceIcon, label: 'HuggingFace', url: DEVELOPER.social.huggingface },
-  { key: 'email', Icon: IconMail, label: 'Email', url: DEVELOPER.social.email },
-]
+import { DEVELOPER } from '../../data/developer'
+import { SOCIAL_LINKS } from '../../data/socialLinks'
 
 function AboutExpanded({ onClose }) {
   return (
@@ -43,7 +31,7 @@ function AboutExpanded({ onClose }) {
             📍 {DEVELOPER.location} · {DEVELOPER.phone}
           </p>
           <div className="flex flex-wrap gap-3">
-            {SOCIAL.map(({ key, Icon, label, url }) => (
+            {SOCIAL_LINKS.map(({ key, Icon, label, url }) => (
               <a
                 key={key}
                 href={url}

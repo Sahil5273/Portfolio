@@ -1,42 +1,11 @@
-import { memo, useState, useEffect, useRef } from 'react'
+import { memo, useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IconSearch, IconX } from '@tabler/icons-react'
-
-const SEARCH_DATA = [
-  { type: 'projects', title: 'Marg-Darshak', desc: 'AI Navigation for the Visually Impaired', tags: ['Python', 'YOLOv8', 'OpenCV', 'Flask'] },
-  { type: 'projects', title: 'Smart Document Assistant', desc: 'RAG-Powered PDF Chatbot', tags: ['LangChain', 'ChromaDB', 'Gemini', 'Gradio'] },
-  { type: 'projects', title: 'Audio Transcription System', desc: 'Full-Stack Speech-to-Text App', tags: ['React', 'FastAPI', 'Faster-Whisper'] },
-  { type: 'projects', title: 'ShareBite', desc: 'Surplus Food Redistribution Platform', tags: ['React', 'Firebase', 'Gemini', 'Node.js'] },
-  { type: 'skills', title: 'Python', desc: 'Primary language for AI/ML', tags: ['Languages'] },
-  { type: 'skills', title: 'LangChain', desc: 'RAG and LLM orchestration', tags: ['Frameworks'] },
-  { type: 'skills', title: 'RAG', desc: 'Retrieval-Augmented Generation', tags: ['AI/ML'] },
-  { type: 'skills', title: 'Azure AI', desc: 'Microsoft Azure AI services', tags: ['Cloud'] },
-  { type: 'skills', title: 'YOLOv8', desc: 'Real-time object detection', tags: ['Computer Vision'] },
-  { type: 'skills', title: 'React.js', desc: 'Frontend framework', tags: ['Web'] },
-  { type: 'skills', title: 'FastAPI', desc: 'Async Python API framework', tags: ['Backend'] },
-  { type: 'certifications', title: 'Azure AI Apps and Agents Developer', desc: 'Microsoft AI-103', tags: ['Azure', 'Microsoft'] },
-  { type: 'certifications', title: 'Oracle GenAI Professional', desc: 'Oracle Cloud Infrastructure', tags: ['Oracle', 'GenAI'] },
-  { type: 'certifications', title: 'IBM AI Developer', desc: 'IBM', tags: ['IBM', 'AI'] },
-  { type: 'certifications', title: 'Health-Hack 2025 Silver Medal', desc: '5th of 236 teams', tags: ['Hackathon', 'Award'] },
-  { type: 'certifications', title: 'Cisco Introduction to Data Science', desc: 'Cisco Networking Academy', tags: ['Cisco', 'Data Science'] },
-  { type: 'casestudies', title: 'Marg-Darshak Case Study', desc: 'Computer vision navigation architecture', tags: ['YOLOv8', 'Computer Vision'] },
-  { type: 'casestudies', title: 'Smart Document Assistant Case Study', desc: 'RAG pipeline architecture', tags: ['RAG', 'LangChain'] },
-  { type: 'casestudies', title: 'ShareBite Case Study', desc: 'Food redistribution platform', tags: ['Firebase', 'Gemini'] },
-]
-
-const TYPE_COLORS = {
-  projects: '#00D9FF',
-  skills: '#FF6B6B',
-  certifications: '#6BCB77',
-  casestudies: '#A855F7',
-}
-
-const TYPE_LABELS = {
-  projects: 'Projects',
-  skills: 'Skills',
-  certifications: 'Certifications',
-  casestudies: 'Case Studies',
-}
+import {
+  SEARCH_DATA,
+  SEARCH_TYPE_COLORS,
+  SEARCH_TYPE_LABELS,
+} from '../../data/searchData'
 
 function highlight(text, query) {
   if (!query) return text
@@ -56,17 +25,21 @@ function SearchModal({ isOpen, onClose }) {
   const inputRef = useRef(null)
 
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100)
-      setQuery('')
-    }
+    if (!isOpen) return
+    const timer = setTimeout(() => inputRef.current?.focus(), 100)
+    return () => clearTimeout(timer)
   }, [isOpen])
 
+  const handleClose = useCallback(() => {
+    setQuery('')
+    onClose()
+  }, [onClose])
+
   useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') onClose() }
+    const handler = (e) => { if (e.key === 'Escape') handleClose() }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [onClose])
+  }, [handleClose])
 
   const results = query.trim().length > 0
     ? SEARCH_DATA.filter((item) => {
@@ -94,7 +67,7 @@ function SearchModal({ isOpen, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
           />
           <motion.div
             className="fixed left-1/2 top-[12%] z-[2001] w-full max-w-lg -translate-x-1/2 px-4"
@@ -120,7 +93,7 @@ function SearchModal({ isOpen, onClose }) {
                   spellCheck={false}
                 />
                 <button
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="text-white/30 hover:text-white/70 transition-colors"
                   aria-label="Close search"
                 >
@@ -144,7 +117,7 @@ function SearchModal({ isOpen, onClose }) {
                 {Object.entries(grouped).map(([type, items]) => (
                   <div key={type} className="px-2 py-2">
                     <div className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/30">
-                      {TYPE_LABELS[type]}
+                      {SEARCH_TYPE_LABELS[type]}
                     </div>
                     {items.map((item) => (
                       <div
@@ -153,7 +126,7 @@ function SearchModal({ isOpen, onClose }) {
                       >
                         <span
                           className="mt-0.5 h-2 w-2 flex-shrink-0 rounded-full"
-                          style={{ background: TYPE_COLORS[type] }}
+                          style={{ background: SEARCH_TYPE_COLORS[type] }}
                         />
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium text-white">
@@ -167,7 +140,7 @@ function SearchModal({ isOpen, onClose }) {
                               <span
                                 key={tag}
                                 className="rounded-full px-1.5 py-0.5 text-[10px]"
-                                style={{ background: `${TYPE_COLORS[type]}18`, color: TYPE_COLORS[type] }}
+                                style={{ background: `${SEARCH_TYPE_COLORS[type]}18`, color: SEARCH_TYPE_COLORS[type] }}
                               >
                                 {highlight(tag, query)}
                               </span>
