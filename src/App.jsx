@@ -8,6 +8,7 @@ import { AppRouterContext } from './context/AppRouterContext'
 import { CARDS } from './data/cards'
 
 const CertificatesPage = lazy(() => import('./pages/CertificatesPage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
 
 function App() {
   const router = useAppRouter()
@@ -55,6 +56,10 @@ function App() {
       {page === 'certificates' ? (
         <Suspense fallback={null}>
           <CertificatesPage />
+        </Suspense>
+      ) : page === 'about' ? (
+        <Suspense fallback={null}>
+          <AboutPage />
         </Suspense>
       ) : (
         <HomePage

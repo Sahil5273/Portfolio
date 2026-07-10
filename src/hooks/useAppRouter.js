@@ -5,8 +5,13 @@ function normalizePath(pathname) {
   return path
 }
 
+const PATH_TO_PAGE = {
+  '/certificates': 'certificates',
+  '/about': 'about',
+}
+
 export function getPageFromPath(pathname = window.location.pathname) {
-  return normalizePath(pathname) === '/certificates' ? 'certificates' : 'home'
+  return PATH_TO_PAGE[normalizePath(pathname)] ?? 'home'
 }
 
 export function useAppRouter() {

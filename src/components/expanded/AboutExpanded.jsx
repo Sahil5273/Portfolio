@@ -1,10 +1,14 @@
 import { memo } from 'react'
 import { motion } from 'framer-motion'
+import { IconArrowRight } from '@tabler/icons-react'
 import ExpandedWrapper from './ExpandedWrapper'
 import { DEVELOPER } from '../../data/developer'
 import { SOCIAL_LINKS } from '../../data/socialLinks'
+import { useAppNavigate } from '../../context/AppRouterContext'
 
 function AboutExpanded({ onClose }) {
+  const { navigate } = useAppNavigate()
+
   return (
     <ExpandedWrapper title="About Me" accent="#6C63FF" onClose={onClose}>
       <div className="grid gap-8 md:grid-cols-[200px_1fr]">
@@ -30,6 +34,17 @@ function AboutExpanded({ onClose }) {
           <p data-reveal-line className="mb-6 text-sm text-[rgba(242,242,255,0.5)]">
             📍 {DEVELOPER.location} · {DEVELOPER.phone}
           </p>
+          <button
+            type="button"
+            onClick={() => {
+              onClose()
+              navigate('/about')
+            }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#6C63FF] px-5 py-2.5 text-sm font-medium text-white shadow-[0_0_24px_rgba(108,99,255,0.35)] transition-transform hover:scale-105"
+          >
+            Read my full story
+            <IconArrowRight size={16} />
+          </button>
           <div className="flex flex-wrap gap-3">
             {SOCIAL_LINKS.map(({ key, Icon, label, url }) => (
               <a
