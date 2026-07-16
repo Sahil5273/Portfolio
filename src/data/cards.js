@@ -69,8 +69,8 @@ export const CARDS = [
       education: 'B.Tech CSE (AI & ML)',
       org: 'VIT Bhopal University',
       cgpa: 'CGPA: 8.04/10',
-      skills: ['Python', 'LangChain', 'React', 'Azure AI'],
-      certs: ['Microsoft Azure AI-103', 'Oracle GenAI Professional'],
+      skills: ['Python', 'Pandas', 'LangChain', 'React'],
+      certs: ['Supernal Ventures Intern', 'Microsoft Azure AI-103'],
     },
   },
   {

@@ -5,7 +5,7 @@ const RESUME_CERT_IDS = [
   'azure-ai-103',
   'oracle-genai',
   'ibm-ai-developer',
-  'google-responsible-ai',
+  'azure-dp900',
 ]
 
 const RESUME_CERT_OVERRIDES = {
@@ -25,14 +25,14 @@ const RESUME_CERT_OVERRIDES = {
     date: '2025',
   },
   'ibm-ai-developer': {
-    title: 'IBM AI Developer Certificate',
+    title: 'IBM AI Developer Professional Certificate',
     org: 'IBM',
     date: '2025',
   },
-  'google-responsible-ai': {
-    title: 'Introduction to Responsible AI',
-    org: 'Google Cloud',
-    date: '2025',
+  'azure-dp900': {
+    title: 'Azure Data Fundamentals (DP-900)',
+    org: 'Microsoft',
+    date: 'Jun 2025',
   },
 }
 
@@ -47,7 +47,26 @@ export const RESUME = {
       description: '',
     },
   ],
-  experience: [],
+  experience: [
+    {
+      title: 'Python Developer Intern',
+      org: 'Supernal Ventures Pvt. Ltd. · Hybrid (Surat, Gujarat)',
+      date: 'May 2026 — July 2026',
+      tech: ['Python', 'Pandas', 'NumPy', 'Data Pipelines'],
+      description:
+        'Paid internship building trading-system infrastructure: scalable architectures, backtesting, market data pipelines, and live trading support.',
+      highlights: [
+        'Developed a background scoring engine for an automated crypto trading system to evaluate market pairs weekly.',
+        'Engineered data pipelines using Python and Pandas to compute momentum and volume indicators (ADX, MACD, OBV) for asset filtering.',
+        'Preprocessed and validated extensive market datasets using Pandas and NumPy to ensure system reliability.',
+        'Integrated AI/ML techniques for predictive modelling and supported live trading with real-time troubleshooting.',
+      ],
+      documents: [
+        { label: 'Appointment Letter', href: '/certificates/supernal-appointment.pdf' },
+        { label: 'Completion Certificate', href: '/certificates/supernal-completion.pdf' },
+      ],
+    },
+  ],
   certifications: RESUME_CERT_IDS.map((id) => {
     const cert = certById[id]
     const override = RESUME_CERT_OVERRIDES[id]

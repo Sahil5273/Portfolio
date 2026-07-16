@@ -81,6 +81,42 @@ function ResumePreviewModal({ onClose }) {
               </div>
             </section>
 
+            {RESUME.experience.length > 0 && (
+              <section>
+                <div className="flex items-center gap-2 mb-4">
+                  <IconCpu size={16} className="text-[#FFD93D]" />
+                  <h4 className="text-sm font-semibold uppercase tracking-widest text-[#FFD93D]">Experience</h4>
+                </div>
+                <div className="space-y-3">
+                  {RESUME.experience.map((item, i) => (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.06 }}
+                      className="rounded-xl border border-white/8 bg-white/3 px-4 py-3"
+                    >
+                      <div className="flex flex-wrap justify-between gap-2">
+                        <p className="text-sm font-semibold text-white">{item.title}</p>
+                        <span className="text-xs text-[#FFD93D]">{item.date}</span>
+                      </div>
+                      <p className="text-xs text-white/45 mt-0.5">{item.org}</p>
+                      {item.highlights?.length > 0 && (
+                        <ul className="mt-2 space-y-1">
+                          {item.highlights.slice(0, 2).map((point) => (
+                            <li key={point} className="flex gap-2 text-[11px] leading-relaxed text-white/55">
+                              <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-[#FFD93D]/70" />
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </section>
+            )}
+
             <section>
               <div className="flex items-center gap-2 mb-4">
                 <IconCpu size={16} className="text-[#FFD93D]" />
@@ -231,7 +267,48 @@ function ResumeExpanded({ onClose }) {
               <span className="text-sm text-[rgba(242,242,255,0.4)]">{item.date}</span>
             </div>
             <p className="mt-1 text-sm text-[#FFD93D]">{item.org}</p>
-            <p className="mt-2 text-sm text-[rgba(242,242,255,0.55)]">{item.description}</p>
+            {item.tech?.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {item.tech.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full px-2 py-0.5 text-[10px] text-[#FFD93D]/80"
+                    style={{ background: 'rgba(255,217,61,0.1)', border: '1px solid rgba(255,217,61,0.2)' }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            {item.description && (
+              <p className="mt-2 text-sm text-[rgba(242,242,255,0.55)]">{item.description}</p>
+            )}
+            {item.highlights?.length > 0 && (
+              <ul className="mt-3 space-y-2">
+                {item.highlights.map((point) => (
+                  <li key={point} className="flex gap-2.5 text-sm leading-relaxed text-[rgba(242,242,255,0.55)]">
+                    <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#FFD93D]/70" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {item.documents?.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {item.documents.map((doc) => (
+                  <a
+                    key={doc.href}
+                    href={doc.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#FFD93D]/30 bg-[#FFD93D]/10 px-3 py-1.5 text-xs font-medium text-[#FFD93D] transition-colors hover:bg-[#FFD93D]/20"
+                  >
+                    <IconFileCv size={12} />
+                    {doc.label}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </section>

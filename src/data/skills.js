@@ -5,6 +5,7 @@ export const SKILLS = {
     { name: 'NLP & RAG', level: 90 },
     { name: 'Generative AI', level: 92 },
     { name: 'Computer Vision', level: 86 },
+    { name: 'Prompt Engineering', level: 88 },
   ],
   Languages: [
     { name: 'Python', level: 92 },
@@ -15,8 +16,9 @@ export const SKILLS = {
   'Frameworks & Tools': [
     { name: 'LangChain', level: 90 },
     { name: 'HuggingFace', level: 88 },
+    { name: 'OpenAI API', level: 86 },
     { name: 'OpenCV / YOLOv8', level: 85 },
-    { name: 'FastAPI / Flask', level: 87 },
+    { name: 'Flask / Node.js', level: 87 },
     { name: 'React.js', level: 84 },
   ],
   'Cloud & DevOps': [
@@ -24,6 +26,6 @@ export const SKILLS = {
     { name: 'Hugging Face Spaces', level: 90 },
     { name: 'Docker', level: 80 },
     { name: 'Firebase', level: 82 },
-    { name: 'Git & REST APIs', level: 88 },
+    { name: 'Git & Async REST APIs', level: 88 },
   ],
 }
